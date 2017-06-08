@@ -1,8 +1,10 @@
 package com.king.other;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -10,7 +12,6 @@ import java.util.*;
  * 用于解析模型类的对象。
  */
 public class Parser {
-
     /**
      * 解析模型类，获取模型类中的成员变量名和值
      *
@@ -21,6 +22,7 @@ public class Parser {
     public static <P> Map getFields(P pojo) throws Exception {
         Map map = new HashMap();
         Class cls = pojo.getClass();
+        map.put("table",cls.getSimpleName());
         //获取模型类中的成员变量。
         java.lang.reflect.Field[] fields = cls.getDeclaredFields();
         //解析字段
