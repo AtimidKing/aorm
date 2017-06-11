@@ -1,14 +1,13 @@
 package com.king.test;
 
 import com.king.other.Parser;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by king on 2017/6/8.
@@ -59,7 +58,6 @@ public class ParserTest {
         String b="ya";
         Object object="ya";
 
-
         a.equals(b);
         assertEquals(a.equals(b),true);
         assertEquals(a==b,true);
@@ -68,5 +66,12 @@ public class ParserTest {
 
     }
 
+    @Test
+    public void getAnnotation(){
+       java.util.Map map= Parser.getAnnotation(Person.class);
+       java.util.Map map1=new HashMap();
+       map1.put("Key","name");
+       assertEquals(map,map1);
+    }
 }
 

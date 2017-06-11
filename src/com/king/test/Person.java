@@ -1,5 +1,7 @@
 package com.king.test;
 
+import com.king.annotation.Key;
+
 /**
  * Created by king on 2017/6/8.
  */
@@ -11,6 +13,7 @@ public class Person {
     }
     public Person(){}
 
+    @Key
     private String name;
     private int age;
     private String sex;
