@@ -1,6 +1,7 @@
 package com.king.other;
 
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,18 +23,13 @@ public class Parser {
     public static <P> Map getFields(P pojo) throws Exception {
         Map map = new HashMap();
         Class cls = pojo.getClass();
-        map.put("table",cls.getSimpleName());
+        map.put("table", cls.getSimpleName());
         //获取模型类中的成员变量。
         java.lang.reflect.Field[] fields = cls.getDeclaredFields();
         //解析字段
         for (int i = 0; i < fields.length; i++) {
             //获取成员变量名称
             String name = fields[i].getName();
-            //获取注解
-            com.king.annotation.Key key = fields[i].getAnnotation(com.king.annotation.Key.class);
-            if (map.containsKey("key") && key != null) {
-                map.put("key", name);
-            }
             //将成员变量名称作为key，变量值作为value存入map中。
             map.put(name, getValue(name, pojo));
 
@@ -78,7 +74,7 @@ public class Parser {
             //获取目标对象的指定成员变量。
             java.lang.reflect.Field field = cls.getDeclaredField(objects[i].toString());
             //获取成员变量指定的成员变量的set方法。
-            java.lang.reflect.Method method = cls.getDeclaredMethod(getMethodName(objects[i].toString(),1), field.getType());
+            java.lang.reflect.Method method = cls.getDeclaredMethod(getMethodName(objects[i].toString(), 1), field.getType());
             //执行目标方法，将对应的注入到目标对象的成员变量中。
             method.invoke(pojo, map.get(objects[i]));
         }
@@ -121,5 +117,23 @@ public class Parser {
         }
     }
 
-
+    /**
+     * 获取成员变量上的注解。
+     *
+     * @param cls 目标类，
+     * @return Map key是注解，value是成员变量。
+     */
+    public static java.util.Map getAnnotation(Class cls) {
+        java.util.Map<String, Object> map = new HashMap<>();
+        java.lang.reflect.Field[] fields = cls.getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            //获取注解
+            Annotation[] annotations = fields[i].getAnnotations();
+            //遍历注解，
+            for (int j = 0; j < annotations.length; j++) {
+                map.put(annotations[j].annotationType().getSimpleName(), fields[i].getName());
+            }
+        }
+        return map;
+    }
 }
